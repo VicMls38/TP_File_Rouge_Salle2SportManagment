@@ -1,0 +1,17 @@
+C:\Users\victo\OneDrive\Bureau\Travail\Cours_MBA\MBA2\Salle2SportManagement> npm audit --audit-level=moderate 
+# npm audit report
+
+esbuild  <=0.24.2
+Severity: moderate
+esbuild enables any website to send any requests to the development server and read the response - https://github.com/advisories/GHSA-67mh-4wv8-2f99
+fix available via `npm audit fix --force`
+Will install vite@7.0.0, which is a breaking change
+frontend/node_modules/esbuild
+  vite  0.11.0 - 6.1.6
+  Depends on vulnerable versions of esbuild
+  frontend/node_modules/vite
+
+2 moderate severity vulnerabilities
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
