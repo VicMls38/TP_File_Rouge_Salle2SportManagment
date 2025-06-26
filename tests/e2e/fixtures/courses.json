@@ -1,0 +1,18 @@
+[
+  {
+    "title": "Yoga",
+    "coach": "Coach A",
+    "datetime": "2025-06-26T10:00:00Z",
+    "duration": 60,
+    "capacity": 10,
+    "isCancelled": false
+  },
+  {
+    "title": "Pilates",
+    "coach": "Coach B",
+    "datetime": "2025-06-27T10:00:00Z",
+    "duration": 60,
+    "capacity": 1,
+    "isCancelled": false
+  }
+]

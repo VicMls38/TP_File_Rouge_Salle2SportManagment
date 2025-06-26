@@ -8,6 +8,7 @@ const classRoutes = require('./routes/classRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
 const authRoutes = require('./routes/authRoutes');
+const prisma = require('./prisma/client');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -32,6 +33,21 @@ app.use('/api/auth', authRoutes);
 app.get('/health', (req, res) => {
   res.json({ status: 'OK', timestamp: new Date().toISOString() });
 });
+
+// Route de nettoyage pour les tests E2E (accessible uniquement en NODE_ENV=test)
+if (process.env.NODE_ENV === 'test') {
+  app.post('/test/clear', async (req, res) => {
+    try {
+      await prisma.booking.deleteMany({});
+      await prisma.class.deleteMany({});
+      await prisma.user.deleteMany({});
+      await prisma.subscription.deleteMany({});
+      res.json({ ok: true });
+    } catch (e) {
+      res.status(500).json({ error: e.message });
+    }
+  });
+}
 
 // Error handling middleware
 app.use((err, req, res, next) => {

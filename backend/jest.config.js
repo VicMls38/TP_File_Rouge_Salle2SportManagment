@@ -1,4 +1,5 @@
 module.exports = {
+  rootDir: '../',
   testMatch: [
     '<rootDir>/tests/unit/services/*.test.js',
     '<rootDir>/tests/**/*.spec.js',

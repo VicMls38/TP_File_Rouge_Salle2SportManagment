@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: gym_management
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U postgres" --health-interval=10s --health-timeout=5s --health-retries=5
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/gym_management
+      NODE_ENV: test
+      PLAYWRIGHT_BASE_URL: http://localhost:8080
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - name: Install root dependencies
+        run: npm ci
+      - name: Install backend dependencies
+        run: npm ci
+        working-directory: backend
+      - name: Install frontend dependencies
+        run: npm ci
+        working-directory: frontend
+      - name: Build frontend
+        run: npm run build
+        working-directory: frontend
+      - name: Prisma generate & migrate
+        run: |
+          npx prisma generate
+          npx prisma migrate deploy
+        working-directory: backend
+      - name: Start backend
+        run: npm run dev &
+        working-directory: backend
+      - name: Start frontend (Vite build preview)
+        run: npm run preview &
+        working-directory: frontend
+      - name: Wait for services
+        run: |
+          npx wait-on http://localhost:3000/health
+          npx wait-on http://localhost:8080
+      - name: Run unit tests (backend)
+        run: npm run test:backend
+      - name: Run unit tests (frontend)
+        run: npm run test:frontend
+      - name: Run integration tests
+        run: npm run test --workspace=tests
+      - name: Run E2E tests
+        run: npx playwright install --with-deps && npm run test:e2e
+      - name: Audit dependencies
+        run: npm audit --audit-level=moderate || true
+
+  # Bonus: badge de statut à ajouter dans le README.md du repo :
+  # ![CI](https://github.com/<user>/<repo>/actions/workflows/ci.yml/badge.svg)

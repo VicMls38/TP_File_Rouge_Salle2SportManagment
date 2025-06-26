@@ -135,3 +135,36 @@ Mettre en place des mocks pour isoler les tests unitaires (TU) et d’intégrati
 ## Conclusion
 
 Cette stratégie vise à garantir une couverture complète, en équilibrant qualité, coût et risques métier. Elle sera adaptée au fil du projet selon retours et évolutions fonctionnelles.
+
+# Tests du projet
+
+Ce projet utilise deux outils de test :
+- **Jest** pour le backend (Node.js)
+- **Vitest** pour le frontend (Vue 3)
+
+## Lancer les tests backend
+
+```sh
+npm run test:backend
+```
+
+## Lancer les tests frontend
+
+```sh
+# Depuis la racine du projet
+npx vitest run tests/unit
+# Ou depuis le dossier frontend
+npm run test:frontend
+```
+
+## Structure des tests
+- `tests/unit/` : tests unitaires (backend et frontend)
+- `tests/integration/` : tests d'intégration
+
+## Justification des choix
+- **Jest** : adapté à Node.js, facile à mocker, rapide pour les services métiers
+- **Vitest** : compatible Vite/Vue 3, supporte les SFC, rapide pour les composants
+
+## Limitations
+- Les tests frontend ne sont pas compatibles avec Jest 30+ (utiliser Vitest)
+- Les tests d'intégration nécessitent parfois une base de données ou un serveur mock

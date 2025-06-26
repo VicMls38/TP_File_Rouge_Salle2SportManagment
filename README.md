@@ -1,3 +1,5 @@
+![CI](https://github.com/VicMls38/TP_File_Rouge_Salle2SportManagment/actions/workflows/ci.yml/badge.svg)
+
 # Gym Management System
 
 A complete fullstack gym management application built with modern web technologies.
