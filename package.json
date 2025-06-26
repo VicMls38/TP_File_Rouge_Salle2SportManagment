@@ -1,0 +1,13 @@
+{
+  "name": "gym-management-system",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend",
+    "tests"
+  ],
+  "scripts": {
+    "test:frontend": "npm run test --workspace=frontend",
+    "test:backend": "npm run test --workspace=backend"
+  }
+}
